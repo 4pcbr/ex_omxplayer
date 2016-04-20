@@ -1,0 +1,2 @@
+%{"dbus": {:hex, :dbus, "0.5.0"},
+  "rebar3_hex": {:hex, :rebar3_hex, "2.0.0"}}
