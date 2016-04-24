@@ -8,7 +8,8 @@ defmodule Omxplayer.Mixfile do
       elixir: "~> 1.1",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
-      deps: deps
+      deps: deps,
+      build_tool: 'rebar',
     ]
   end
 
@@ -22,6 +23,7 @@ defmodule Omxplayer.Mixfile do
   defp deps do
     [
       { :dbus,        "~> 0.5.0"  },
+      { :rebar3_hex,  "~> 2.0"    },
     ]
   end
 end
