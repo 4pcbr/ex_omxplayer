@@ -41,5 +41,12 @@ defmodule OmxplayerPlayerTest do
     assert is_bitstring addr
   end
 
+  test "dbus_pid" do
+    { :ok, pid } = dbus_pid
+    assert is_bitstring pid
+    assert Regex.match?( ~r/^\d+$/, pid )
+  end
+
+
 
 end

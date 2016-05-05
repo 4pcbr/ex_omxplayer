@@ -34,20 +34,35 @@ defmodule Omxplayer.Player do
   def dbus_addr do
     case get_dbus_files do
       files when is_list( files ) ->
-        dbus_file = Enum.find( files, fn file ->
-          ! Regex.match?( ~r/\.pid$/, file )
-        end )
-        case dbus_file do
+        case Enum.find( files, fn file -> ! Regex.match?( ~r/\.pid$/, file ) end ) do
           nil  ->
             { :error, "Dbus file could not be found or is not readable by the current user." }
           file ->
-            case File.read( "/tmp/#{dbus_file}" ) do
+            case File.read( "/tmp/#{file}" ) do
               { :ok, data } -> { :ok, String.strip( data ) }
               error -> error
             end
         end
+      _ -> { :error, 'DBUS files could not be found' }
     end
   end
+
+  def dbus_pid do
+    case get_dbus_files do
+      files when is_list( files ) ->
+        case Enum.find( files, fn file -> Regex.match?( ~r/\.pid$/, file ) end ) do
+          nil ->
+            { :error, "Dbus PID file could not be found or is not readable by the current user." }
+          file ->
+            case File.read( "/tmp/#{file}" ) do
+              { :ok, data } -> { :ok, String.strip( data ) }
+                error -> error
+            end
+        end
+      _ -> { :error, 'DBUS files could not be found' }
+    end
+  end
+
 
   defp get_dbus_files do
     ls_mask "/tmp/", ~r/omxplayerdbus.*/
@@ -63,12 +78,14 @@ defmodule Omxplayer.Player do
     end
   end
 
-  def play( url, args ) do
+  def play( url ), do: play( url, [] )
+  def play( url, args ) when is_list( args ) do
     if is_running? do
       stop
     end
-    System.cmd( @executable, args )
+    System.cmd( @executable, args ++ [ url ] )
   end
+  def play( url, args ), do: raise "Unknown args format. List is expected."
 
   def stop do
     #TODO
