@@ -23,7 +23,6 @@ defmodule Omxplayer.Mixfile do
   defp deps do
     [
       { :dbus,        "~> 0.5.0"  },
-      { :rebar3_hex,  "~> 2.0"    },
     ]
   end
 end

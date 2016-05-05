@@ -1,6 +1,8 @@
 defmodule Omxplayer do
   
   use GenServer
+  require Record
+  Record.defrecord :bus_id, Record.extract(:bus_id, from_lib: "dbus/include/dbus.hrl")
 
   def start_link do
     { :ok, pid } = GenServer.start_link( __MODULE__, nil, name: __MODULE__ )
