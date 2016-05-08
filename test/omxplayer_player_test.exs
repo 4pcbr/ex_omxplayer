@@ -8,6 +8,7 @@ defmodule OmxplayerPlayerTest do
     assert File.exists?( info )
   end
 
+  @tag :is_running
   test "get_pid" do
     case get_pid do
       { :ok, pid } ->
@@ -18,6 +19,7 @@ defmodule OmxplayerPlayerTest do
     end
   end
 
+  @tag :is_running
   test "is_running?" do
     case get_pid do
       { :ok, _pid } ->
@@ -26,27 +28,5 @@ defmodule OmxplayerPlayerTest do
         raise "The process is not running"
     end
   end
-
-  test "ls_mask" do
-    files = ls_mask( "/", ~r/usr|tmp|root/ )
-    assert is_list files
-    assert length( files ) == 3
-    assert Enum.member?( files, "usr"  )
-    assert Enum.member?( files, "tmp"  )
-    assert Enum.member?( files, "root" )
-  end
-
-  test "dbus_addr" do
-    { :ok, addr } = dbus_addr
-    assert is_bitstring addr
-  end
-
-  test "dbus_pid" do
-    { :ok, pid } = dbus_pid
-    assert is_bitstring pid
-    assert Regex.match?( ~r/^\d+$/, pid )
-  end
-
-
 
 end
